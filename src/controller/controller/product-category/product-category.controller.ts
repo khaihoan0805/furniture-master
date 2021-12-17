@@ -1,10 +1,10 @@
 import { inject, interfaces } from "inversify";
 import { ICreateProductCategoryInput, ICreateProductCategoryOutput, IFindProductCategoryByIdInput, IFindProductCategoryByIdOutput, IUpdateProductCategoryInput, IUpdateProductCategoryOutput } from "../..";
-import { CONTROLLER, PRODUCT_ATTRIBUTE_OUTPUT, PRODUCT_CATEGORY_INPUT, PRODUCT_CATEGORY_WORKFLOW, TYPES } from "../../../const";
+import { CONTROLLER, PRODUCT_ATTRIBUTE_OUTPUT, PRODUCT_CATEGORY_INPUT, PRODUCT_CATEGORY_USECASE, TYPES } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { singletonNamedProvide, namedInject } from "../../../infrastructure/ioc";
-import { ICreateProductCategoryWorkflow, IFindProductCategoryByIdWorkflow, IUpdateProductCategoryWorkflow } from "../../../workflow";
+import { ICreateProductCategoryUsecase, IFindProductCategoryByIdUsecase, IUpdateProductCategoryUsecase } from "../../../usecase";
 
 export interface IProductCategoryController {
     createProductCategory(req: Request): Promise<ControllerResult>;
@@ -18,24 +18,24 @@ export class ProductCategoryController extends BaseController implements IProduc
         return CONTROLLER.PRODUCT_ATTRIBUTE;
     }
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_CATEGORY_WORKFLOW.CREATE)
-    protected createProductCategoryWorkflow: ICreateProductCategoryWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_CATEGORY_USECASE.CREATE)
+    protected createProductCategoryUsecase: ICreateProductCategoryUsecase;
 
     @inject(PRODUCT_CATEGORY_INPUT.CREATE)
     protected createProductCategoryInput: interfaces.Newable<ICreateProductCategoryInput>;
     @inject(PRODUCT_ATTRIBUTE_OUTPUT.CREATE)
     protected createProductCategoryOutput: interfaces.Newable<ICreateProductCategoryOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_CATEGORY_WORKFLOW.FIND_BY_ID)
-    protected findProductCategoryByIdWorkflow: IFindProductCategoryByIdWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_CATEGORY_USECASE.FIND_BY_ID)
+    protected findProductCategoryByIdUsecase: IFindProductCategoryByIdUsecase;
 
     @inject(PRODUCT_CATEGORY_INPUT.FIND_BY_ID)
     protected findProductCategoryByIdInput: interfaces.Newable<IFindProductCategoryByIdInput>;
     @inject(PRODUCT_ATTRIBUTE_OUTPUT.FIND_BY_ID)
     protected findProductCategoryByIdOutput: interfaces.Newable<IFindProductCategoryByIdOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_CATEGORY_WORKFLOW.CREATE)
-    protected updateProductCategoryWorkflow: IUpdateProductCategoryWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_CATEGORY_USECASE.CREATE)
+    protected updateProductCategoryUsecase: IUpdateProductCategoryUsecase;
 
     @inject(PRODUCT_CATEGORY_INPUT.CREATE)
     protected updateProductCategoryInput: interfaces.Newable<IUpdateProductCategoryInput>;
@@ -45,7 +45,7 @@ export class ProductCategoryController extends BaseController implements IProduc
     public async createProductCategory(req: Request): Promise<ControllerResult> {
         const input = new this.createProductCategoryInput(req);
 
-        const output = new this.createProductCategoryOutput(await this.createProductCategoryWorkflow.execute(input))
+        const output = new this.createProductCategoryOutput(await this.createProductCategoryUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -53,7 +53,7 @@ export class ProductCategoryController extends BaseController implements IProduc
     public async findProductCategoryById(req: Request): Promise<ControllerResult> {
         const input = new this.findProductCategoryByIdInput(req);
 
-        const output = new this.findProductCategoryByIdOutput(await this.findProductCategoryByIdWorkflow.execute(input))
+        const output = new this.findProductCategoryByIdOutput(await this.findProductCategoryByIdUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -61,7 +61,7 @@ export class ProductCategoryController extends BaseController implements IProduc
     public async updateProductCategory(req: Request): Promise<ControllerResult> {
         const input = new this.updateProductCategoryInput(req)
 
-        const output = new this.updateProductCategoryOutput(await this.updateProductCategoryWorkflow.execute(input))
+        const output = new this.updateProductCategoryOutput(await this.updateProductCategoryUsecase.execute(input))
 
         return { content: output.response }
     }

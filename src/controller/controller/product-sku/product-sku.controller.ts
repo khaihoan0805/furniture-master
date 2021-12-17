@@ -1,10 +1,10 @@
 import { inject, interfaces } from "inversify";
 import { ICreateProductSKUInput, ICreateProductSKUOutput, IFindProductSKUByIdInput, IFindProductSKUByIdOutput, IUpdateProductSKUInput, IUpdateProductSKUOutput } from "../..";
-import { CONTROLLER, PRODUCT_SKU_INPUT, PRODUCT_SKU_OUTPUT, PRODUCT_SKU_WORKFLOW, TYPES } from "../../../const";
+import { CONTROLLER, PRODUCT_SKU_INPUT, PRODUCT_SKU_OUTPUT, PRODUCT_SKU_USECASE, TYPES } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { singletonNamedProvide, namedInject } from "../../../infrastructure/ioc";
-import { ICreateProductSKUWorkflow, IFindProductSKUByIdWorkflow, IUpdateProductSKUWorkflow } from "../../../workflow";
+import { ICreateProductSKUUsecase, IFindProductSKUByIdUsecase, IUpdateProductSKUUsecase } from "../../../usecase";
 
 export interface IProductSKUController {
     createProductSKU(req: Request): Promise<ControllerResult>;
@@ -18,24 +18,24 @@ export class ProductSKUController extends BaseController implements IProductSKUC
         return CONTROLLER.PRODUCT_ATTRIBUTE;
     }
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_WORKFLOW.CREATE)
-    protected createProductSKUWorkflow: ICreateProductSKUWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_USECASE.CREATE)
+    protected createProductSKUUsecase: ICreateProductSKUUsecase;
 
     @inject(PRODUCT_SKU_INPUT.CREATE)
     protected createProductSKUInput: interfaces.Newable<ICreateProductSKUInput>;
     @inject(PRODUCT_SKU_OUTPUT.CREATE)
     protected createProductSKUOutput: interfaces.Newable<ICreateProductSKUOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_WORKFLOW.FIND_BY_ID)
-    protected findProductSKUByIdWorkflow: IFindProductSKUByIdWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_USECASE.FIND_BY_ID)
+    protected findProductSKUByIdUsecase: IFindProductSKUByIdUsecase;
 
     @inject(PRODUCT_SKU_INPUT.FIND_BY_ID)
     protected findProductSKUByIdInput: interfaces.Newable<IFindProductSKUByIdInput>;
     @inject(PRODUCT_SKU_OUTPUT.FIND_BY_ID)
     protected findProductSKUByIdOutput: interfaces.Newable<IFindProductSKUByIdOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_WORKFLOW.CREATE)
-    protected updateProductSKUWorkflow: IUpdateProductSKUWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_USECASE.CREATE)
+    protected updateProductSKUUsecase: IUpdateProductSKUUsecase;
 
     @inject(PRODUCT_SKU_INPUT.CREATE)
     protected updateProductSKUInput: interfaces.Newable<IUpdateProductSKUInput>;
@@ -45,7 +45,7 @@ export class ProductSKUController extends BaseController implements IProductSKUC
     public async createProductSKU(req: Request): Promise<ControllerResult> {
         const input = new this.createProductSKUInput(req);
 
-        const output = new this.createProductSKUOutput(await this.createProductSKUWorkflow.execute(input))
+        const output = new this.createProductSKUOutput(await this.createProductSKUUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -53,7 +53,7 @@ export class ProductSKUController extends BaseController implements IProductSKUC
     public async findProductSKUById(req: Request): Promise<ControllerResult> {
         const input = new this.findProductSKUByIdInput(req);
 
-        const output = new this.findProductSKUByIdOutput(await this.findProductSKUByIdWorkflow.execute(input))
+        const output = new this.findProductSKUByIdOutput(await this.findProductSKUByIdUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -61,7 +61,7 @@ export class ProductSKUController extends BaseController implements IProductSKUC
     public async updateProductSKU(req: Request): Promise<ControllerResult> {
         const input = new this.updateProductSKUInput(req)
 
-        const output = new this.updateProductSKUOutput(await this.updateProductSKUWorkflow.execute(input))
+        const output = new this.updateProductSKUOutput(await this.updateProductSKUUsecase.execute(input))
 
         return { content: output.response }
     }

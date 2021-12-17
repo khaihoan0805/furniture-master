@@ -1,9 +1,9 @@
 import { Request } from "express";
-import { CONTROLLER, TYPES, USER_INPUT, USER_OUTPUT, USER_WORKFLOW } from "../../../const";
+import { CONTROLLER, TYPES, USER_INPUT, USER_OUTPUT, USER_USECASE } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { inject, interfaces, namedInject, singletonNamedProvide } from "../../../infrastructure/ioc";
-import { ICreateUserWorkflow } from "../../../workflow";
+import { ICreateUserUsecase } from "../../../usecase";
 import { ICreateUserInput } from "../../input";
 import { ICreateUserOutput } from "../../output";
 
@@ -17,8 +17,8 @@ export class UserController extends BaseController implements IuserController {
         return CONTROLLER.USER;
     }
 
-    @namedInject(TYPES.WORKFLOW, USER_WORKFLOW.CREATE)
-    protected createUserWorkflow: ICreateUserWorkflow;
+    @namedInject(TYPES.USECASE, USER_USECASE.CREATE)
+    protected createUserUsecase: ICreateUserUsecase;
 
     @inject(USER_INPUT.CREATE)
     protected createUserInput: interfaces.Newable<ICreateUserInput>;
@@ -28,7 +28,7 @@ export class UserController extends BaseController implements IuserController {
     async createUser(req: Request): Promise<ControllerResult> {
         const input = new this.createUserInput(req)
 
-        const output = new this.createUserOutput(await this.createUserWorkflow.execute(input));
+        const output = new this.createUserOutput(await this.createUserUsecase.execute(input));
 
         return { content: output.response }
     }

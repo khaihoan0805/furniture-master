@@ -1,10 +1,10 @@
 import { inject, interfaces } from "inversify";
 import { ICreateProductInput, ICreateProductOutput, IFindProductByCategoryIdInput, IPaginateProductInput, IPaginateProductOutput } from "../..";
-import { CONTROLLER, PRODUCT_INPUT, PRODUCT_OUTPUT, PRODUCT_WORKFLOW, TYPES } from "../../../const";
+import { CONTROLLER, PRODUCT_INPUT, PRODUCT_OUTPUT, PRODUCT_USECASE, TYPES } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { singletonNamedProvide, namedInject } from "../../../infrastructure/ioc";
-import { ICreateProductWorkflow, IFindProductByCategoryIdWorkflow, IFindProductByIdWorkflow, IPaginateProductWorkflow, IUpdateProductWorkflow } from "../../../workflow";
+import { ICreateProductUsecase, IFindProductByCategoryIdUsecase, IFindProductByIdUsecase, IPaginateProductUsecase, IUpdateProductUsecase } from "../../../usecase";
 import { IFindProductByIdInput } from "../../input/product/find-by-id.input";
 import { IUpdateProductInput } from "../../input/product/update.input";
 import { IFindProductByCategoryIdOutput } from "../../output";
@@ -25,40 +25,40 @@ export class ProductController extends BaseController implements IProductControl
         return CONTROLLER.PRODUCT;
     }
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_WORKFLOW.CREATE)
-    protected createProductWorkflow: ICreateProductWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_USECASE.CREATE)
+    protected createProductUsecase: ICreateProductUsecase;
 
     @inject(PRODUCT_INPUT.CREATE)
     protected createProductInput: interfaces.Newable<ICreateProductInput>;
     @inject(PRODUCT_OUTPUT.CREATE)
     protected createProductOutput: interfaces.Newable<ICreateProductOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_WORKFLOW.FIND_BY_ID)
-    protected findProductByIdWorkflow: IFindProductByIdWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_USECASE.FIND_BY_ID)
+    protected findProductByIdUsecase: IFindProductByIdUsecase;
 
     @inject(PRODUCT_INPUT.FIND_BY_ID)
     protected findProductByIdInput: interfaces.Newable<IFindProductByIdInput>;
     @inject(PRODUCT_OUTPUT.FIND_BY_ID)
     protected findProductByIdOutput: interfaces.Newable<IFindProductByIdOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_WORKFLOW.UPDATE)
-    protected updateProductWorkflow: IUpdateProductWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_USECASE.UPDATE)
+    protected updateProductUsecase: IUpdateProductUsecase;
 
     @inject(PRODUCT_INPUT.UPDATE)
     protected updateProductInput: interfaces.Newable<IUpdateProductInput>;
     @inject(PRODUCT_OUTPUT.UPDATE)
     protected updateProductOutput: interfaces.Newable<IUpdateProductOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_WORKFLOW.PAGINATE)
-    protected paginateProductWorkflow: IPaginateProductWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_USECASE.PAGINATE)
+    protected paginateProductUsecase: IPaginateProductUsecase;
 
     @inject(PRODUCT_INPUT.PAGINATE)
     protected paginateProductInput: interfaces.Newable<IPaginateProductInput>;
     @inject(PRODUCT_OUTPUT.PAGINATE)
     protected paginateProductOutput: interfaces.Newable<IPaginateProductOutput>;
     
-    @namedInject(TYPES.WORKFLOW, PRODUCT_WORKFLOW.FIND_BY_CATEGORY_ID)
-    protected findProductByCategoryIdWorkflow: IFindProductByCategoryIdWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_USECASE.FIND_BY_CATEGORY_ID)
+    protected findProductByCategoryIdUsecase: IFindProductByCategoryIdUsecase;
 
     @inject(PRODUCT_INPUT.FIND_BY_CATEGORY_ID)
     protected findProductByCategoryIdInput: interfaces.Newable<IFindProductByCategoryIdInput>;
@@ -68,7 +68,7 @@ export class ProductController extends BaseController implements IProductControl
     public async createProduct(req: Request): Promise<ControllerResult> {
         const input = new this.createProductInput(req);
 
-        const output = new this.createProductOutput(await this.createProductWorkflow.execute(input))
+        const output = new this.createProductOutput(await this.createProductUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -76,7 +76,7 @@ export class ProductController extends BaseController implements IProductControl
     public async findProductById(req: Request): Promise<ControllerResult> {
         const input = new this.findProductByIdInput(req);
 
-        const output = new this.findProductByIdOutput(await this.findProductByIdWorkflow.execute(input))
+        const output = new this.findProductByIdOutput(await this.findProductByIdUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -84,7 +84,7 @@ export class ProductController extends BaseController implements IProductControl
     public async updateProduct(req: Request): Promise<ControllerResult> {
         const input = new this.updateProductInput(req)
 
-        const output = new this.updateProductOutput(await this.updateProductWorkflow.execute(input))
+        const output = new this.updateProductOutput(await this.updateProductUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -92,14 +92,14 @@ export class ProductController extends BaseController implements IProductControl
     public async paginateProduct(req: Request): Promise<ControllerResult> {
         const input = new this.paginateProductInput(req)
 
-        const output = new this.paginateProductOutput(await this.paginateProductWorkflow.execute(input))
+        const output = new this.paginateProductOutput(await this.paginateProductUsecase.execute(input))
 
         return { content: output.response }
     }
     public async findProductByCategoryId(req: Request): Promise<ControllerResult> {
         const input = new this.findProductByCategoryIdInput(req);
 
-        const output = new this.findProductByCategoryIdOutput(await this.findProductByCategoryIdWorkflow.execute(input))
+        const output = new this.findProductByCategoryIdOutput(await this.findProductByCategoryIdUsecase.execute(input))
 
         return { content: output.response }
     }
