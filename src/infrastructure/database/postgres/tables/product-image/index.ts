@@ -1,0 +1,1 @@
+export * from './product-iamge.table';

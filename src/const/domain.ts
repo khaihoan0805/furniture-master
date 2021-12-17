@@ -1,0 +1,23 @@
+export const API_DOMAIN = {
+    CHANNEL: Symbol.for('CHANNEL'),
+    ATTRIBUTE: Symbol.for('ATTRIBUTE'),
+    ATTRIBUTE_VALUE: Symbol.for('ATTRIBUTE_VALUE'),
+    USER: Symbol.for('USER'),
+    ACCOUNT_TYPE: Symbol.for('ACCOUNT_TYPE'),
+    PERMISSION: Symbol.for('PERMISSION'),
+    ROLE: Symbol.for('ROLE'),
+    CATEGORY: Symbol.for('CATEGORY'),
+    PRODUCT: Symbol.for('PRODUCT'),
+    PRODUCT_CATEGORY: Symbol.for('PRODUCT_CATEGORY'),
+    PRODUCT_ATTRIBUTE: Symbol.for('PRODUCT_ATTRIBUTE'),
+    PRODUCT_SKU: Symbol.for('PRODUCT_SKU'),
+    PRODUCT_SKU_ATTRIBUTE_VALUE: Symbol.for('PRODUCT_SKU_ATTRIBUTE_VALUE'),
+    METADATA: Symbol.for('METADATA'),
+    ORDER: Symbol.for('ORDER'),
+    ORDER_ITEM: Symbol.for('ORDER_ITEM'),
+    CUSTOMER: Symbol.for('CUSTOMER'),
+    ADDRESS: Symbol.for('ADDRESS'),
+    IMAGE: Symbol.for('IMAGE'),
+    PRODUCT_IMAGE: Symbol.for('IMAGE_PRODUCT'),
+    SOURCE: Symbol.for('SOURCE')
+}
