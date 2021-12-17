@@ -4,4 +4,4 @@ export * from './domain';
 export * from './input';
 export * from './ouput';
 export * from './schema';
-export * from './workflow';
+export * from './usecase';

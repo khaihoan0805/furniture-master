@@ -11,7 +11,7 @@ import './const';
 import './infrastructure';
 import './application';
 import './controller';
-import './workflow';
+import './usecase';
 import './domain';
 
 container.load(buildProviderModule())

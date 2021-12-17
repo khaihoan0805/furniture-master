@@ -1,10 +1,10 @@
 import { inject, interfaces } from "inversify";
 import { ICreateProductSKUAttributeValueInput, ICreateProductSKUAttributeValueOutput, IFindProductSKUAttributeValueByIdInput, IFindProductSKUAttributeValueByIdOutput, IUpdateProductSKUAttributeValueOutput } from "../..";
-import { CONTROLLER, PRODUCT_SKU_ATTRIBUTE_VALUE_INPUT, PRODUCT_SKU_ATTRIBUTE_VALUE_OUTPUT, PRODUCT_SKU_ATTRIBUTE_VALUE_WORKFLOW, TYPES } from "../../../const";
+import { CONTROLLER, PRODUCT_SKU_ATTRIBUTE_VALUE_INPUT, PRODUCT_SKU_ATTRIBUTE_VALUE_OUTPUT, PRODUCT_SKU_ATTRIBUTE_VALUE_USECASE, TYPES } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { singletonNamedProvide, namedInject } from "../../../infrastructure/ioc";
-import { ICreateProductSKUAttributeValueWorkflow, IFindProductSKUAttributeValueByIdWorkflow, IUpdateProductSKUAttributeValueWorkflow } from "../../../workflow";
+import { ICreateProductSKUAttributeValueUsecase, IFindProductSKUAttributeValueByIdUsecase, IUpdateProductSKUAttributeValueUsecase } from "../../../usecase";
 import { IUpdateProductSKUAttributeValueInput } from "../../input/product-sku-attribute-value/update.input";
 
 export interface IProductSKUAttributeValueController {
@@ -19,24 +19,24 @@ export class ProductSKUAttributeValueController extends BaseController implement
         return CONTROLLER.PRODUCT_ATTRIBUTE;
     }
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_ATTRIBUTE_VALUE_WORKFLOW.CREATE)
-    protected createProductSKUAttributeValueWorkflow: ICreateProductSKUAttributeValueWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_ATTRIBUTE_VALUE_USECASE.CREATE)
+    protected createProductSKUAttributeValueUsecase: ICreateProductSKUAttributeValueUsecase;
 
     @inject(PRODUCT_SKU_ATTRIBUTE_VALUE_INPUT.CREATE)
     protected createProductSKUAttributeValueInput: interfaces.Newable<ICreateProductSKUAttributeValueInput>;
     @inject(PRODUCT_SKU_ATTRIBUTE_VALUE_OUTPUT.CREATE)
     protected createProductSKUAttributeValueOutput: interfaces.Newable<ICreateProductSKUAttributeValueOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_ATTRIBUTE_VALUE_WORKFLOW.FIND_BY_ID)
-    protected findProductSKUAttributeValueByIdWorkflow: IFindProductSKUAttributeValueByIdWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_ATTRIBUTE_VALUE_USECASE.FIND_BY_ID)
+    protected findProductSKUAttributeValueByIdUsecase: IFindProductSKUAttributeValueByIdUsecase;
 
     @inject(PRODUCT_SKU_ATTRIBUTE_VALUE_INPUT.FIND_BY_ID)
     protected findProductSKUAttributeValueByIdInput: interfaces.Newable<IFindProductSKUAttributeValueByIdInput>;
     @inject(PRODUCT_SKU_ATTRIBUTE_VALUE_OUTPUT.FIND_BY_ID)
     protected findProductSKUAttributeValueByIdOutput: interfaces.Newable<IFindProductSKUAttributeValueByIdOutput>;
 
-    @namedInject(TYPES.WORKFLOW, PRODUCT_SKU_ATTRIBUTE_VALUE_WORKFLOW.CREATE)
-    protected updateProductSKUAttributeValueWorkflow: IUpdateProductSKUAttributeValueWorkflow;
+    @namedInject(TYPES.USECASE, PRODUCT_SKU_ATTRIBUTE_VALUE_USECASE.CREATE)
+    protected updateProductSKUAttributeValueUsecase: IUpdateProductSKUAttributeValueUsecase;
 
     @inject(PRODUCT_SKU_ATTRIBUTE_VALUE_INPUT.CREATE)
     protected updateProductSKUAttributeValueInput: interfaces.Newable<IUpdateProductSKUAttributeValueInput>;
@@ -46,7 +46,7 @@ export class ProductSKUAttributeValueController extends BaseController implement
     public async createProductSKUAttributeValue(req: Request): Promise<ControllerResult> {
         const input = new this.createProductSKUAttributeValueInput(req);
 
-        const output = new this.createProductSKUAttributeValueOutput(await this.createProductSKUAttributeValueWorkflow.execute(input))
+        const output = new this.createProductSKUAttributeValueOutput(await this.createProductSKUAttributeValueUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -54,7 +54,7 @@ export class ProductSKUAttributeValueController extends BaseController implement
     public async findProductSKUAttributeValueById(req: Request): Promise<ControllerResult> {
         const input = new this.findProductSKUAttributeValueByIdInput(req);
 
-        const output = new this.findProductSKUAttributeValueByIdOutput(await this.findProductSKUAttributeValueByIdWorkflow.execute(input))
+        const output = new this.findProductSKUAttributeValueByIdOutput(await this.findProductSKUAttributeValueByIdUsecase.execute(input))
 
         return { content: output.response }
     }
@@ -62,7 +62,7 @@ export class ProductSKUAttributeValueController extends BaseController implement
     public async updateProductSKUAttributeValue(req: Request): Promise<ControllerResult> {
         const input = new this.updateProductSKUAttributeValueInput(req)
 
-        const output = new this.updateProductSKUAttributeValueOutput(await this.updateProductSKUAttributeValueWorkflow.execute(input))
+        const output = new this.updateProductSKUAttributeValueOutput(await this.updateProductSKUAttributeValueUsecase.execute(input))
 
         return { content: output.response }
     }
