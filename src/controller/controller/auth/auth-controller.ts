@@ -1,9 +1,9 @@
 import { Request } from "express";
-import { AUTH_INPUT, AUTH_OUTPUT, AUTH_WORKFLOW, CONTROLLER, TYPES } from "../../../const";
+import { AUTH_INPUT, AUTH_OUTPUT, AUTH_USECASE, CONTROLLER, TYPES } from "../../../const";
 import { ControllerResult } from "../../../infrastructure";
 import { BaseController } from "../../../infrastructure/base";
 import { inject, interfaces, namedInject, singletonNamedProvide, singletonProvide } from "../../../infrastructure/ioc";
-import { ISignInWorkflow } from "../../../workflow";
+import { ISignInUsecase } from "../../../usecase";
 import { ISignInInput } from "../../input";
 import { ISignInOutput } from "../../output/auth";
 
@@ -17,8 +17,8 @@ export class AuthController extends BaseController implements IAuthController {
         return CONTROLLER.AUTH
     }
 
-    @namedInject(TYPES.WORKFLOW, AUTH_WORKFLOW.SIGN_IN)
-    protected signInWorkflow: ISignInWorkflow;
+    @namedInject(TYPES.USECASE, AUTH_USECASE.SIGN_IN)
+    protected signInUsecase: ISignInUsecase;
 
     @inject(AUTH_INPUT.SIGN_IN)
     protected signInInput: interfaces.Newable<ISignInInput>;
@@ -28,7 +28,7 @@ export class AuthController extends BaseController implements IAuthController {
     public async signIn(req: Request): Promise<ControllerResult> {
         const input = new this.signInInput(req);
 
-        const output = new this.signInOutput(await this.signInWorkflow.execute(input))
+        const output = new this.signInOutput(await this.signInUsecase.execute(input))
 
         return { content: output.response }
     }

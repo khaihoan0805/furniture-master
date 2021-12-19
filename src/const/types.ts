@@ -29,7 +29,7 @@ export const TYPES = {
     INTERCEPTOR: Symbol.for('INTERCEPTOR'),
     REPOSITORY: Symbol.for('REPOSITORY'),
     CONTEXT_SERVICE: Symbol.for('CONTEXT_SERVICE'),
-    WORKFLOW: Symbol.for('WORKFLOW')
+    USECASE: Symbol.for('USECASE')
 }
 
 export enum ELEMENTS_IN_PAGE {
