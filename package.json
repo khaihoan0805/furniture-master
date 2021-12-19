@@ -5,16 +5,26 @@
   "main": "index.js",
   "betterScripts": {
     "dev": {
-      "command": "nodemon ./process/server.ts",
+      "command": "nodemon --exec ts-node --project tsconfig.json ./process/server.ts",
       "env": {
         "NODE_PATH": ".",
         "NODE_ENV": "development"
+      }
+    },
+    "container:dev": {
+      "command": "nodemon --exec ts-node --project tsconfig.json ./process/server.ts",
+      "env": {
+        "NODE_PATH": ".",
+        "NODE_ENV": "container"
       }
     }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "better-npm-run dev"
+    "dev": "better-npm-run dev",
+    "container:dev": "better-npm-run container:dev",
+    "build": "tsc -p .",
+    "production": "node ./dist/process/server.js"
   },
   "repository": {
     "type": "git",

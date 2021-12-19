@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  furniture-development:
+    container_name: furniture-development
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/usr/app
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+    command: npm run container:dev
+    networks:
+      - 'furniture-node'
+
+  postgres:
+    container_name: furniture-master-write
+    image: postgres # use latest official postgres version
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Gentlemen2020?
+      - POSTGRES_DB=furniture-master-write
+    expose:
+      - 5432
+    ports:
+      - '5432:5432'
+    # volumes:
+    #   - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    networks:
+      - 'furniture-node'
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
+networks:
+  furniture-node:
