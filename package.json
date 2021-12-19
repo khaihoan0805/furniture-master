@@ -24,7 +24,7 @@
     "dev": "better-npm-run dev",
     "container:dev": "better-npm-run container:dev",
     "build": "tsc -p .",
-    "production": "node ./dist/process/server/js"
+    "production": "node ./dist/process/server.js"
   },
   "repository": {
     "type": "git",
