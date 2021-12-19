@@ -19,7 +19,7 @@ export class BulkCreateQuery {
       this.arrayHelper = container.get<IArrayHelper>(TYPES.ARRAY_HELPER);
     }
   
-    public async execute<TEntity = any>(data: (TEntity & { createdBy?: number })[]): Promise<Model<TEntity>[]> {
+    public async execute<TEntity = any>(data: (TEntity & { createdBy?: number })[]): Promise<Model<TEntity, TEntity>[]> {
       if (!data || this.arrayHelper.isEmpty(data)) {
         throw Error('missing data');
       }
