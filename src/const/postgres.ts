@@ -18,6 +18,7 @@ export const DATABASE = {
 export enum TABLE {
     USER = 'tb_users',
     PRODUCT = 'tb_products',
+    CHANNEL = 'tb_channels',
     PRODUCT_ATTRIBUTES = 'tb_products_attributes',
     CATEGORY = 'tb_categories',
     PRODUCT_CATEGORY = 'tb_products_caterogies',

@@ -4,9 +4,8 @@ import { IConfiguration, ILog, ILogger } from "../../utils";
 import { Sequelize } from "sequelize";
 import { DatabaseModels } from '../index';
 import { IBasePostgresTable } from './tables/base';
-import { AttributeDomain, CategoryDomain, ProductAttributeDomain, ProductDomain, UserDomain, ProductCategoryDomain, PermissionDomain, MetadataDomain, OrderDomain, OrderItemDomain, ProductImageDomain, SourceDomain, ImageDomain, IUserDomain, IProductDomain, ICategoryDomain, IAttributeDomain, IProductCategoryDomain, IProductAttributeDomain, IPermissionDomain, ICustomerDomain, IMetadataDomain, IOrderDomain, IOrderItemDomain, IProductImageDomain, ISourceDomain, IImageDomain, IProductSKUDomain, IProductSKUAttributeValueDomain, IAttributeValueDomain } from '../../../domain';
-import { IAttributeInstance, IAttributeValueInstance, ICategoryInstance, ICustomerInstance, IImageInstance, IMetadataInstance, IOrderInstance, IOrderItemInstance, IPermissionInstance, IProductAttributeInstance, IProductCategoryInsance, IProductImageInstance, IProductInstance, IProductSKUAttributeValueInstance, IProductSKUIntance, ISourceInstance, IUserInstance } from './tables';
-import { CustomerDomain } from '../../../domain/customer/customer.domain';
+import { IUserDomain, IProductDomain, ICategoryDomain, IAttributeDomain, IProductCategoryDomain, IProductAttributeDomain, IPermissionDomain, ICustomerDomain, IMetadataDomain, IOrderDomain, IOrderItemDomain, IProductImageDomain, ISourceDomain, IImageDomain, IProductSKUDomain, IProductSKUAttributeValueDomain, IAttributeValueDomain, IChannelDomain } from '../../../domain';
+import { IAttributeInstance, IAttributeValueInstance, ICategoryInstance, IChannelInstance, ICustomerInstance, IImageInstance, IMetadataInstance, IOrderInstance, IOrderItemInstance, IPermissionInstance, IProductAttributeInstance, IProductCategoryInsance, IProductImageInstance, IProductInstance, IProductSKUAttributeValueInstance, IProductSKUIntance, ISourceInstance, IUserInstance } from './tables';
 import { operatorsAliases } from './operator-aliases'
 
 export interface IDatabase {
@@ -18,11 +17,7 @@ export interface IDatabase {
 export class PostgresDatabase {
     private conn: Sequelize;
     public dbModels: DatabaseModels;
-
-    get connection() {
-        return this.conn
-    }
-
+    
     get id() {
         return NAMES.POSTGRES
     }
@@ -82,6 +77,9 @@ export class PostgresDatabase {
 
         @namedInject(TYPES.DATABASE, API_DOMAIN.ATTRIBUTE_VALUE)
         protected attributeValueModel: IBasePostgresTable<IAttributeValueDomain, IAttributeValueInstance>,
+
+        @namedInject(TYPES.DATABASE, API_DOMAIN.ATTRIBUTE_VALUE)
+        protected channelModel: IBasePostgresTable<IChannelDomain, IChannelInstance>,
     ) {
         const dbConfig = {
             ...this.config.get('postgres.info.write'),
@@ -132,7 +130,8 @@ export class PostgresDatabase {
             source: this.sourceModel.define(this.conn),
             image: this.imageModel.define(this.conn),
             productSKU: this.productSKUModel.define(this.conn),
-            productSKUAttributeValue: this.productSKUAttributeValueModel.define(this.conn)
+            productSKUAttributeValue: this.productSKUAttributeValueModel.define(this.conn),
+            channel: this.channelModel.define(this.conn)
         }
 
         this.dbModels = dbModels

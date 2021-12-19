@@ -20,7 +20,7 @@ export class CustomerModel extends BasePostgresTable<ICustomerDomain, ICustomerI
             name: {
                 type: DatabaseDataTypes.STRING,
                 allowNull: false,
-                field: 'email'
+                field: 'name'
             },
             occupation: {
                 type: DatabaseDataTypes.STRING,
@@ -30,7 +30,7 @@ export class CustomerModel extends BasePostgresTable<ICustomerDomain, ICustomerI
             status: {
                 type: DatabaseDataTypes.INTEGER,
                 allowNull: false,
-                field: 'occupation'
+                field: 'status'
             },
             age: {
                 type: DatabaseDataTypes.INTEGER,

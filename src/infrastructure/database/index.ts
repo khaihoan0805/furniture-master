@@ -100,7 +100,8 @@ export type DatabaseModels = {
     source?: DatabaseModel,
     image?: DatabaseModel,
     productSKU?: DatabaseModel,
-    productSKUAttributeValue?: DatabaseModel
+    productSKUAttributeValue?: DatabaseModel,
+    channel?: DatabaseModel
 };
 
 export * from './query-builder';
