@@ -30,7 +30,7 @@ export class FindProductByCategoryIdUsecase extends BaseUsecase<IFindProductByCa
 
     async execute(input: IFindProductByCategoryIdInput): Promise<IFindProductByCategoryIdOutput> {
         const isExistedCategory = await this.categoryRepository.findById(<number>input.categoryId)
-        this.log.info(isExistedCategory)
+
         if (!isExistedCategory) {
             throw this.errorFactory.unauthorizedError(`This category ${input.categoryId} is not existed.`)
         }
@@ -40,8 +40,6 @@ export class FindProductByCategoryIdUsecase extends BaseUsecase<IFindProductByCa
                 { code: 'categoryId', operator: Operators.Equals, value: isExistedCategory.id }
             ]
         })
-
-        this.log.info(productsCategory)
 
         const products = await Promise.all(productsCategory.map(async productCategory => {
             return await this.productRepository.findById(<number>productCategory.productId)

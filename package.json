@@ -5,7 +5,7 @@
   "main": "index.js",
   "betterScripts": {
     "dev": {
-      "command": "nodemon --exec ts-node --project tsconfig.json ./process/server.ts",
+      "command": "nodemon --exec ts-node ./process/server.ts",
       "env": {
         "NODE_PATH": ".",
         "NODE_ENV": "development"

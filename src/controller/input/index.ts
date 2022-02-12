@@ -8,3 +8,4 @@ export * from './product-category';
 export * from './product-sku';
 export * from './product-sku-attribute-value';
 export * from './user';
+export * from './channel';

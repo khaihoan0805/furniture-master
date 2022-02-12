@@ -17,9 +17,13 @@ export interface IDatabase {
 export class PostgresDatabase {
     private conn: Sequelize;
     public dbModels: DatabaseModels;
-    
+
     get id() {
         return NAMES.POSTGRES
+    }
+
+    get connection() {
+        return this.conn
     }
 
     constructor(
@@ -78,7 +82,7 @@ export class PostgresDatabase {
         @namedInject(TYPES.DATABASE, API_DOMAIN.ATTRIBUTE_VALUE)
         protected attributeValueModel: IBasePostgresTable<IAttributeValueDomain, IAttributeValueInstance>,
 
-        @namedInject(TYPES.DATABASE, API_DOMAIN.ATTRIBUTE_VALUE)
+        @namedInject(TYPES.DATABASE, API_DOMAIN.CHANNEL)
         protected channelModel: IBasePostgresTable<IChannelDomain, IChannelInstance>,
     ) {
         const dbConfig = {
