@@ -5,13 +5,13 @@ import { namedInject, singletonNamedProvide } from "../../ioc";
 import { BasePostgresRepository, IRepository } from "../base";
 import { IAttributeValueMapper } from "./attribute-value.mapper";
 
-export interface IAttributeValueRepository extends IRepository<IAttributeValueDomain> {}
+export interface IAttributeValueRepository extends IRepository<IAttributeValueDomain> { }
 
 @singletonNamedProvide(TYPES.REPOSITORY, API_DOMAIN.ATTRIBUTE_VALUE)
 export class AttributeValueRepository extends BasePostgresRepository<IAttributeValueDomain> implements IAttributeValueRepository {
     model: DatabaseModel<IAttributeValueDomain>
 
-    @namedInject(TYPES.MAPPER, API_DOMAIN.CATEGORY)
+    @namedInject(TYPES.MAPPER, API_DOMAIN.ATTRIBUTE_VALUE)
     protected mapper: IAttributeValueMapper;
 
     constructor(
