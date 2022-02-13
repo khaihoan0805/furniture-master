@@ -5,7 +5,7 @@ import { IProductRepository } from "../../../infrastructure";
 import { namedInject, singletonNamedProvide } from "../../../infrastructure/ioc";
 import { IPaginateUsecase, PaginateUsecase } from "../../base";
 
-export interface IPaginateProductUsecase extends IPaginateUsecase<IProductDomain, IPaginateProductInput, IPaginateProductOutput> {}
+export interface IPaginateProductUsecase extends IPaginateUsecase<IProductDomain, IPaginateProductInput, IPaginateProductOutput> { }
 
 @singletonNamedProvide(TYPES.USECASE, PRODUCT_USECASE.PAGINATE)
 export class PaginateProductUsecase extends PaginateUsecase<IProductDomain, IPaginateProductInput, IPaginateProductOutput> {
@@ -17,7 +17,7 @@ export class PaginateProductUsecase extends PaginateUsecase<IProductDomain, IPag
         return PRODUCT_USECASE.PAGINATE;
     }
 
-    constructor(    
+    constructor(
         @namedInject(TYPES.REPOSITORY, API_DOMAIN.PRODUCT)
         protected repository: IProductRepository
     ) {
@@ -25,7 +25,6 @@ export class PaginateProductUsecase extends PaginateUsecase<IProductDomain, IPag
     }
 
     async execute(input: IPaginateProductInput): Promise<IPaginateProductOutput> {
-        console.log(`offset: `,input.offset)
         return super.execute(input)
     }
 }

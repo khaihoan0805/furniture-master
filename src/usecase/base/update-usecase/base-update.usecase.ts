@@ -5,7 +5,7 @@ import { BaseUsecase, IBaseHttpInput, IBaseHttpOutput, IBaseUsecase, IDomain } f
 import { inject, injectable, singletonNamedProvide } from '../../../infrastructure/ioc';
 import { IRepository } from "../../../infrastructure/repository/base";
 
-export interface IUpdateUsecase<D extends IDomain, I extends IBaseHttpInput & { id: number }, O extends IBaseHttpOutput> extends IBaseUsecase<I,O> {}
+export interface IUpdateUsecase<D extends IDomain, I extends IBaseHttpInput & { id: number }, O extends IBaseHttpOutput> extends IBaseUsecase<I, O> { }
 
 @injectable()
 export abstract class UpdateUsecase<D extends IDomain, I extends IBaseHttpInput & { id: number }, O extends IBaseHttpOutput> extends BaseUsecase<I, O>{
