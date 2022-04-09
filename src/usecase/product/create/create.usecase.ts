@@ -1,9 +1,10 @@
-import { API_DOMAIN, PRODUCT_USECASE, TYPES, USER_USECASE } from "../../../const";
+import { API_DOMAIN, PRODUCT_STEP, PRODUCT_USECASE, TYPES, USER_USECASE } from "../../../const";
 import { ICreateProductInput, ICreateProductOutput } from "../../../controller";
-import { IProductAttributeDomain, IProductCategoryDomain, IProductDomain } from "../../../domain";
-import { IAttributeRepository, ICategoryRepository, IProductAttributeRepository, IProductCategoryRepository, IProductRepository, Operators } from "../../../infrastructure";
+import { IProductDomain } from "../../../domain";
+import { IProductRepository, Operators } from "../../../infrastructure";
 import { namedInject, singletonNamedProvide } from "../../../infrastructure/ioc";
 import { CreateUsecase, ICreateUsecase } from "../../base";
+import { IAddProductCategoryStep, IAddProductAttributesStep } from "./steps";
 
 export interface ICreateProductUsecase extends ICreateUsecase<IProductDomain, ICreateProductInput, ICreateProductOutput> { }
 
@@ -14,20 +15,14 @@ export class CreateProductUsecase extends CreateUsecase<IProductDomain, ICreateP
     }
 
     get id() {
-        return USER_USECASE.CREATE
+        return USER_USECASE.CREATE;
     }
 
-    @namedInject(TYPES.REPOSITORY, API_DOMAIN.ATTRIBUTE)
-    protected attributeRepository: IAttributeRepository
+    @namedInject(TYPES.STEP, PRODUCT_STEP.ADD_PRODUCT_CATEGORY)
+    protected addProductCategoryStep: IAddProductCategoryStep;
 
-    @namedInject(TYPES.REPOSITORY, API_DOMAIN.PRODUCT_ATTRIBUTE)
-    protected productAttributeRepository: IProductAttributeRepository
-
-    @namedInject(TYPES.REPOSITORY, API_DOMAIN.CATEGORY)
-    protected categoryRepository: ICategoryRepository
-
-    @namedInject(TYPES.REPOSITORY, API_DOMAIN.PRODUCT_CATEGORY)
-    protected productCategoryRepository: IProductCategoryRepository
+    @namedInject(TYPES.STEP, PRODUCT_STEP.ADD_PRODUCT_ATTRIBUTES)
+    protected addProductAttributesStep: IAddProductAttributesStep;
 
     constructor(
         @namedInject(TYPES.REPOSITORY, API_DOMAIN.PRODUCT)
@@ -49,52 +44,18 @@ export class CreateProductUsecase extends CreateUsecase<IProductDomain, ICreateP
     }
 
     async execute(input: ICreateProductInput): Promise<ICreateProductOutput> {
-        const product = await super.execute(input)
+        const output = await super.execute(input);
 
-        const categories = await Promise.all(input.categories.map(async category => {
-            const isExisted = await this.categoryRepository.findById(<number>category)
+        const product = output.entity;
 
-            if (!isExisted) {
-                throw this.errorFactory.unauthorizedError(`This category ${category} is not existed.`)
-            }
+        const categories = await this.addProductCategoryStep.run(product)
+        product.categories = categories;
 
-            return isExisted;
-        }))
+        const attributes = await this.addProductAttributesStep.run(product);
+        product.attributes = attributes;
 
-        for(let index = 0; index < categories.length; index++) {
-            const entity = <IProductCategoryDomain>this.entityFactory.create(API_DOMAIN.PRODUCT_CATEGORY.toString(), {
-                productId: product.entity.id,
-                categoryId: categories[index].id,
-                status: 1
-            })
+        output.entity = product;
 
-            await this.productCategoryRepository.create(entity)   
-        }
-
-        product.entity.categories = categories;
-
-        const attributes = await Promise.all(input.attributes.map(async attribute => {
-            const isExisted = await this.attributeRepository.findById(<number>attribute)
-
-            if (!isExisted) {
-                throw this.errorFactory.unauthorizedError(`This attributeID ${attribute} is not existed.`)
-            }
-
-            return isExisted;
-        }))
-
-        for (let index = 0; index < attributes.length; index++) {
-            const entity = <IProductAttributeDomain>this.entityFactory.create(API_DOMAIN.PRODUCT_ATTRIBUTE.toString(), {
-                productId: product.entity.id,
-                attributeId: attributes[index].id,
-                status: 1
-            })
-
-            await this.productAttributeRepository.create(entity)
-        }
-
-        product.entity.attributes = attributes;
-
-        return product;
+        return output;
     }
 }
