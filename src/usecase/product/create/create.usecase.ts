@@ -4,7 +4,7 @@ import { IProductDomain } from "../../../domain";
 import { IProductRepository, Operators } from "../../../infrastructure";
 import { namedInject, singletonNamedProvide } from "../../../infrastructure/ioc";
 import { CreateUsecase, ICreateUsecase } from "../../base";
-import { IAddProductCategoryStep, IAddProductAttributesStep } from "./steps";
+import { IAddProductCategoryStep } from "./steps";
 
 export interface ICreateProductUsecase extends ICreateUsecase<IProductDomain, ICreateProductInput, ICreateProductOutput> { }
 
@@ -20,9 +20,6 @@ export class CreateProductUsecase extends CreateUsecase<IProductDomain, ICreateP
 
     @namedInject(TYPES.STEP, PRODUCT_STEP.ADD_PRODUCT_CATEGORY)
     protected addProductCategoryStep: IAddProductCategoryStep;
-
-    @namedInject(TYPES.STEP, PRODUCT_STEP.ADD_PRODUCT_ATTRIBUTES)
-    protected addProductAttributesStep: IAddProductAttributesStep;
 
     constructor(
         @namedInject(TYPES.REPOSITORY, API_DOMAIN.PRODUCT)
@@ -50,9 +47,6 @@ export class CreateProductUsecase extends CreateUsecase<IProductDomain, ICreateP
 
         const categories = await this.addProductCategoryStep.run(product)
         product.categories = categories;
-
-        const attributes = await this.addProductAttributesStep.run(product);
-        product.attributes = attributes;
 
         output.entity = product;
 

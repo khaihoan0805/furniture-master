@@ -4,8 +4,8 @@ import { IConfiguration, ILog, ILogger } from "../../utils";
 import { Sequelize } from "sequelize";
 import { DatabaseModels } from '../index';
 import { IBasePostgresTable } from './tables/base';
-import { IUserDomain, IProductDomain, ICategoryDomain, IAttributeDomain, IProductCategoryDomain, IProductAttributeDomain, IPermissionDomain, ICustomerDomain, IMetadataDomain, IOrderDomain, IOrderItemDomain, IProductImageDomain, ISourceDomain, IImageDomain, IProductSKUDomain, IProductSKUAttributeValueDomain, IAttributeValueDomain, IChannelDomain } from '../../../domain';
-import { IAttributeInstance, IAttributeValueInstance, ICategoryInstance, IChannelInstance, ICustomerInstance, IImageInstance, IMetadataInstance, IOrderInstance, IOrderItemInstance, IPermissionInstance, IProductAttributeInstance, IProductCategoryInsance, IProductImageInstance, IProductInstance, IProductSKUAttributeValueInstance, IProductSKUIntance, ISourceInstance, IUserInstance } from './tables';
+import { IUserDomain, IProductDomain, ICategoryDomain, IAttributeDomain, IProductCategoryDomain, ICustomerDomain, IOrderItemDomain, IAttributeValueDomain, IChannelDomain, IOrderDomain } from '../../../domain';
+import { IAttributeInstance, IAttributeValueInstance, ICategoryInstance, IChannelInstance, ICustomerInstance, IOrderInstance, IOrderItemInstance, IProductCategoryInsance, IProductInstance, IUserInstance } from './tables';
 import { operatorsAliases } from './operator-aliases'
 
 export interface IDatabase {
@@ -46,38 +46,14 @@ export class PostgresDatabase {
         @namedInject(TYPES.DATABASE, API_DOMAIN.PRODUCT_CATEGORY)
         protected productCaterogyModel: IBasePostgresTable<IProductCategoryDomain, IProductCategoryInsance>,
 
-        @namedInject(TYPES.DATABASE, API_DOMAIN.PRODUCT_ATTRIBUTE)
-        protected productAttributeModel: IBasePostgresTable<IProductAttributeDomain, IProductAttributeInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.PERMISSION)
-        protected permissionModel: IBasePostgresTable<IPermissionDomain, IPermissionInstance>,
-
         @namedInject(TYPES.DATABASE, API_DOMAIN.CUSTOMER)
         protected customerModel: IBasePostgresTable<ICustomerDomain, ICustomerInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.METADATA)
-        protected metadataModel: IBasePostgresTable<IMetadataDomain, IMetadataInstance>,
 
         @namedInject(TYPES.DATABASE, API_DOMAIN.ORDER)
         protected orderModel: IBasePostgresTable<IOrderDomain, IOrderInstance>,
 
         @namedInject(TYPES.DATABASE, API_DOMAIN.ORDER_ITEM)
         protected orderItemModel: IBasePostgresTable<IOrderItemDomain, IOrderItemInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.PRODUCT_IMAGE)
-        protected productImageModel: IBasePostgresTable<IProductImageDomain, IProductImageInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.SOURCE)
-        protected sourceModel: IBasePostgresTable<ISourceDomain, ISourceInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.PRODUCT_SKU)
-        protected productSKUModel: IBasePostgresTable<IProductSKUDomain, IProductSKUIntance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.PRODUCT_SKU_ATTRIBUTE_VALUE)
-        protected productSKUAttributeValueModel: IBasePostgresTable<IProductSKUAttributeValueDomain, IProductSKUAttributeValueInstance>,
-
-        @namedInject(TYPES.DATABASE, API_DOMAIN.IMAGE)
-        protected imageModel: IBasePostgresTable<IImageDomain, IImageInstance>,
 
         @namedInject(TYPES.DATABASE, API_DOMAIN.ATTRIBUTE_VALUE)
         protected attributeValueModel: IBasePostgresTable<IAttributeValueDomain, IAttributeValueInstance>,
@@ -123,18 +99,10 @@ export class PostgresDatabase {
             category: this.categoryModel.define(this.conn),
             attribute: this.attributeModel.define(this.conn),
             attributeValue: this.attributeValueModel.define(this.conn),
-            productAttribute: this.productAttributeModel.define(this.conn),
             productCategory: this.productCaterogyModel.define(this.conn),
-            permission: this.permissionModel.define(this.conn),
             customer: this.customerModel.define(this.conn),
-            metadata: this.metadataModel.define(this.conn),
             order: this.orderModel.define(this.conn),
             orderItem: this.orderItemModel.define(this.conn),
-            productImage: this.productImageModel.define(this.conn),
-            source: this.sourceModel.define(this.conn),
-            image: this.imageModel.define(this.conn),
-            productSKU: this.productSKUModel.define(this.conn),
-            productSKUAttributeValue: this.productSKUAttributeValueModel.define(this.conn),
             channel: this.channelModel.define(this.conn)
         }
 

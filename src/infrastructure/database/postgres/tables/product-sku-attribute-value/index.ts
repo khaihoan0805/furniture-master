@@ -1,1 +1,0 @@
-export * from './product-sku-attribute-value.table';

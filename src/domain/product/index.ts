@@ -1,7 +1,6 @@
 import { IDomain } from "../../infrastructure/base/domain";
 import { IAttributeDomain } from "../attribute";
 import { ICategoryDomain } from "../category";
-import { IProductSKUDomain } from "../product-sku";
 
 export interface IProduct {
     image: string;
@@ -11,7 +10,6 @@ export interface IProduct {
     description: string;
     attributes: (IAttributeDomain | number)[];
     categories: (ICategoryDomain | number)[];
-    skus: (IProductSKUDomain | null)[] | number[];
     createdBy: number;
     createdAt: Date;
     updatedBy: number;

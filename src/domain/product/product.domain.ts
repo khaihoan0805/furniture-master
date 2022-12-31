@@ -37,10 +37,6 @@ export class ProductDomain extends BaseDomain<IProductDomain> implements IProduc
         return this.context.categories;
     }
 
-    get skus() {
-        return this.context.skus;
-    }
-
     get createdAt() {
         return this.context.createdAt;
     }
@@ -69,7 +65,6 @@ export class ProductDomain extends BaseDomain<IProductDomain> implements IProduc
             description,
             attributes,
             categories,
-            skus,
             createdAt,
             createdBy,
             updatedAt,
@@ -85,7 +80,6 @@ export class ProductDomain extends BaseDomain<IProductDomain> implements IProduc
             description,
             attributes,
             categories,
-            skus,
             createdAt,
             createdBy,
             updatedAt,
